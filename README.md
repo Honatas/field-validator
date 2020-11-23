@@ -15,8 +15,8 @@ import com.github.honatas.fieldvalidator.FieldValidator;
 public class MyFieldValidator extends FieldValidator {
 
     public Validator required = (Object field) -> {
-        if (field == null || (field instanceof String && ((String)field).isEmpty()) || (field instanceof Number && ((Number) field).intValue() == 0)) {
-            return "Field is required";
+        if (field == null || (field instanceof String && ((String) field).isEmpty()) || (field instanceof Number && ((Number) field).intValue() == 0)) {
+            return "Value is required";
         }
         return null;
     };
@@ -47,7 +47,7 @@ This will yeld the following result:
 {field01=Value is required, field03=Value must be greater than zero}
 ```
 
-## How it wotks
+## How it works
 
 The Validator functions have to be written in a way where they either return null if the data is valid, or a string message detailing why the validation has failed.  
 
