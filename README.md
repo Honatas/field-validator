@@ -5,6 +5,18 @@
 
 An imperative data validator written with java 8's lambda.  
 
+## Download
+
+If you are using Maven, add this to your pom.xml in the dependencies section:
+
+```xml
+    <dependency>
+        <groupId>com.github.honatas</groupId>
+        <artifactId>field-validator</artifactId>
+        <version>0.0.2</version>
+    </dependency>
+```
+
 ## Usage
 
 At first, inherit FieldValidator class and create your Validator functions:
