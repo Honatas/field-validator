@@ -1,7 +1,9 @@
 # Field Validator
 
 [![GitHub](https://img.shields.io/github/license/honatas/field-validator?style=plastic)](https://github.com/Honatas/field-validator "View this project on GitHub")
-[![coffee](https://img.shields.io/badge/buy%20me%20a-coffee-orange?style=plastic)](https://ko-fi.com/honatas "Buy me a coffee")  
+[![Maven Central](https://img.shields.io/maven-central/v/com.github.honatas/field-validator.svg?style=plastic)](https://search.maven.org/search?q=g:%22com.github.honatas%22%20AND%20a:%22field-validator%22)
+[![coffee](https://img.shields.io/badge/buy%20me%20a-coffee-brown?style=plastic)](https://ko-fi.com/honatas "Buy me a coffee")  
+
 
 An imperative data validator written with java 8's lambda.  
 
