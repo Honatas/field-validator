@@ -71,12 +71,44 @@ You can pass as many Validators as you want to the validate method. FieldValidat
 
 There are two ways you can check for errors after running your validators. You can either use the **FieldValidator::hasErrors** method which returns a boolean stating if any validation error has occurred, or you can use the **FieldValidator::checkHasErrors** method which instead of returning anything, throws a **FieldValidationException** if any validation error has occurred. This exception class has a **getErrors()** method that returns the errors Map.  
 
-## Regex Validation
+## Parameterized Validations
 
-There is a built-in functionality that enables for regex validation. You can create regex Validators by using the static methods **FieldValidator::getValidatorRegexMatch** and **FieldValidator::getValidatorRegexFind**:  
+You can create validators with parameters, here is an example:
 
 ```java
+public class MyFieldValidator extends FieldValidator {
+
+	public Validator maxLength(int size) {
+    	return (value) -> {
+    		if (value == null) {
+    			return null;
+    		}
+    		if (value.toString().length() > size) {
+    			return "Field must have maximum " + size + " characters";
+    		}
+    		return null;
+    	};
+    }
+}
+```
+
+And then you call the validator like this:
+
+```java
+    MyFieldValidator v = new MyFieldValidator();
+    v.validate("field01", "abcde", v.maxLength(2));
+```
+
+
+## Regex Validation
+
+You can create regex Validators by using the static methods **FieldValidator::getValidatorRegexMatch** and **FieldValidator::getValidatorRegexFind**:  
+
+```java
+public class MyFieldValidator extends FieldValidator {
+
     public Validator number = FieldValidator.getValidatorRegexMatch("\\d+", "Value has to be a number");
+}
 ```
 
 ## Contributions

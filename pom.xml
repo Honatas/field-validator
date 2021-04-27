@@ -6,7 +6,7 @@
 	
 	<groupId>com.github.honatas</groupId>
 	<artifactId>field-validator</artifactId>
-	<version>0.0.2</version>
+	<version>1.0.0</version>
 	
 	<name>field-validator</name>
 	<description>An imperative data validator written in java 8</description>

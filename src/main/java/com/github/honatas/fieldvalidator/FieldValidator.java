@@ -34,23 +34,33 @@ public class FieldValidator {
 		}
 	}
 	
+	/** @return true if there is an error for the specified field. */
+	public boolean hasErrorOn(String field) {
+		return this.getErrors().get(field) != null;
+	}
+	
+	/** Explicitly adds an error on the specified field. Use it if you need FieldValidator to output the result of external validations. */
+	public void addErrorOn(String field, String error) {
+		this.getErrors().put(field, error);
+	}
+	
 	/**
 	 * Validator functional interface, represents a validation method.
 	 */
 	public interface Validator {
-		String validate(Object data);
+		String validate(Object value);
 	}
 	
 	/**
 	 * Validates a field with the given validators, in order. Halts on the first validation error and sets the errors map with the field and the error message.
 	 * 
 	 * @param fieldName this will be used as the key on the errors map
-	 * @param data the data to be validated
+	 * @param value the data to be validated
 	 * @param validators the {@code Validator}s that will act upon the data
 	 */
-	public void validate(String fieldName, Object data, Validator... validators) {
+	public void validate(String fieldName, Object value, Validator... validators) {
 		for (Validator v: validators) {
-			String message = v.validate(data); 
+			String message = v.validate(value); 
 			if (message != null) {
 				errors.put(fieldName, message);
 				return;
