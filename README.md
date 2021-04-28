@@ -15,7 +15,7 @@ If you are using Maven, add this to your pom.xml in the dependencies section:
     <dependency>
         <groupId>com.github.honatas</groupId>
         <artifactId>field-validator</artifactId>
-        <version>0.0.2</version>
+        <version>1.0.0</version>
     </dependency>
 ```
 
