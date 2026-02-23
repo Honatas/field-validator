@@ -20,53 +20,86 @@ public class FieldValidator {
 
 	private Logger logger = Logger.getLogger(FieldValidator.class.getName());
 
+	/** The errors map. */
 	protected Map<String, String> errors = new HashMap<>();
+
+	/** The data to be validated. */
 	protected Serializable data;
+
+	/** The class of the data to be validated. */
 	protected Class<?> dataClazz;
 
+	/** Creates a {@code FieldValidator} without data. */
 	public FieldValidator() {
 		this.logger.fine("Validator created without data");
 	}
 
+	/** 
+	 * Creates a {@code FieldValidator} with data. 
+	 * @param data the data to be validated
+	 */
 	public FieldValidator(Serializable data) {
 		this.data = data;
 		this.dataClazz = data.getClass();
 		this.logger.fine("Validator created with data from class " + this.dataClazz.getName());
 	}
 	
-	/** @return A {@code java.util.Map} conatining an error message for each field. */
+	/** 
+	 * Returns the errors map.
+	 * @return A {@code java.util.Map} conatining an error message for each field. 
+	 */
 	public Map<String, String> getErrors() {
 		return this.errors;
 	}
 
-	/** @return The data that is being validated. */
+	/** 
+	 * Returns the data that has been passed to the constructor.
+	 * @return The data that is being validated. 
+	 */
 	public Serializable getData() {
 		return this.data;
 	}
 	
-	/** @return true if a validation error has occurred, false otherwise */
+	/** 
+	 * Returns true if a validation error has occurred, false otherwise.
+	 * @return true if a validation error has occurred, false otherwise 
+	 */
 	public boolean hasErrors() {
 		return !this.errors.isEmpty();
 	}
 	
-	/** Checks if has any error and throws a {@code FieldValidationException} when errors are found. */
+	/** 
+	 * Checks if has any error and throws a {@code FieldValidationException} when errors are found.
+	 * @throws FieldValidationException if there are any errors
+	 */
 	public void checkHasErrors() throws FieldValidationException {
 		if (this.hasErrors()) {
 			throw new FieldValidationException(this.errors, this.data);
 		}
 	}
 	
-	/** @return true if there is an error for the specified field. */
+	/** 
+	 * Returns true if there is an error for the specified field.
+	 * @param field the field to check
+	 * @return true if there is an error for the specified field. */
 	public boolean hasErrorOn(String field) {
 		return this.getErrors().get(field) != null;
 	}
 	
-	/** Explicitly adds an error on the specified field. Use it if you need FieldValidator to output the result of external validations. */
+	/** 
+	 * Explicitly adds an error on the specified field. Use it if you need FieldValidator to output the result of external validations.
+	 * @param field the field to add the error to
+	 * @param error the error message
+	 */
 	public void addErrorOn(String field, String error) {
 		this.getErrors().put(field, error);
 	}
 
-	/** @return The error message for the specified field, or null if there is no error. */
+	/** 
+	 * Returns the error message for the specified field, or null if there is no error.
+	 * @param field the field to get the error for
+	 * @return The error message for the specified field, or null if there is no error.
+	 */
 	public String getErrorOn(String field) {
 		return this.getErrors().get(field);
 	}
@@ -75,6 +108,12 @@ public class FieldValidator {
 	 * Validator functional interface, represents a validation method.
 	 */
 	public interface Validator {
+		/**
+		 * Validates the given value.
+		 * @param value the value to validate
+		 * @param fieldName the name of the field being validated
+		 * @return the error message, or null if there is no error
+		 */
 		String validate(Object value, String fieldName);
 	}
 	

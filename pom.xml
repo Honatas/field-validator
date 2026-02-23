@@ -13,6 +13,7 @@
 	<url>https://github.com/Honatas/field-validator</url>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.release>16</maven.compiler.release>
 		<maven.jar.plugin.version>3.5.0</maven.jar.plugin.version>
 		<maven.source.plugin.version>3.4.0</maven.source.plugin.version>
