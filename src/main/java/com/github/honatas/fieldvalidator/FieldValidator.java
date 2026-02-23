@@ -74,12 +74,19 @@ public class FieldValidator {
 	
 	/**
 	 * Validates a field with the given validators, in order. Halts on the first validation error and sets the errors map with the field and the error message.
+	 * Use this method if you didn't pass an object to the constructor.
 	 * 
 	 * @param value the data to be validated
 	 * @param fieldName this will be used as the key on the errors map
 	 * @param validators the {@code Validator}s that will act upon the data
 	 */
 	public void validate(Object value, String fieldName, Validator... validators) {
+		if (validators == null || validators.length == 0) {
+			throw new IllegalArgumentException("You need to pass at least one validator");
+		}
+		if (fieldName == null || fieldName.isEmpty()) {
+			throw new IllegalArgumentException("You need to pass a field name");
+		}
 		for (Validator v: validators) {
 			String message = v.validate(value); 
 			if (message != null) {
@@ -89,8 +96,17 @@ public class FieldValidator {
 		}
 	}
 
-
+	/**
+	 * Validates a field with the given validators, in order. Halts on the first validation error and sets the errors map with the field and the error message.
+	 * Use this method if you passed an object to the constructor.
+	 * 
+	 * @param fieldName name of the field in the object. This will also be used as the key on the errors map
+	 * @param validators the {@code Validator}s that will act upon the data
+	 */
 	public void validate(String fieldName, Validator... validators) {
+		if (this.data == null) {
+			throw new IllegalStateException("You need to pass an object to be validated at the constructor if you want to use FieldValidator::validate without passing the value");
+		}
 		Object value = getFieldValue(fieldName);
 		this.validate(value, fieldName, validators);
 	}
