@@ -107,6 +107,7 @@ public class FieldValidator {
 	/**
 	 * Validator functional interface, represents a validation method.
 	 */
+	@FunctionalInterface
 	public interface Validator {
 		/**
 		 * Validates the given value.
@@ -159,8 +160,6 @@ public class FieldValidator {
 		this.validate(value, fieldName, validators);
 	}
 
-
-
 	private Object getFieldValue(String fieldName) {
 		try {
 			return extractFieldValue(fieldName);
@@ -168,7 +167,6 @@ public class FieldValidator {
 			return null;
 		}
 	}
-
 
 	private Object extractFieldValue(String fieldName) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		try {
@@ -180,7 +178,6 @@ public class FieldValidator {
 			return accessor.invoke(this.data);
 		}
 	}
-
 	
 	/**
 	 * Creates a {@code Validator} by using a regular expression with the matches method.
