@@ -1,5 +1,6 @@
 package com.github.honatas.fieldvalidator;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -88,5 +89,15 @@ class FieldValidatorTest {
 		TestValidator validator = new TestValidator(rec);
 		validator.validate("name", validator.required);
 		assertTrue(validator.getErrors().containsKey("name"));
+	}
+
+	@Test
+	void documentationTest() {
+		TestRecord data = new TestRecord(null, 2, -3);
+		TestValidator validator = new TestValidator(data);
+		validator.validate("name", validator.required);
+		validator.validate("age", validator.required, validator.positive);
+		validator.validate("height", validator.required, validator.positive);
+		assertEquals("{name=name is required, height=height must be greater than zero}", validator.getErrors().toString());
 	}
 }

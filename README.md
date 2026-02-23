@@ -15,29 +15,36 @@ If you are using Maven, add this to your pom.xml in the dependencies section:
     <dependency>
         <groupId>com.github.honatas</groupId>
         <artifactId>field-validator</artifactId>
-        <version>1.1.0</version>
+        <version>2.0.0</version>
     </dependency>
 ```
 
 ## Usage
 
-At first, create your own validator class by extending FieldValidator and then create your Validator functions:
+At first, create your own validator class by extending FieldValidator and then create your Validator functions. Don't forget to implement both constructors:
 
 ```java
 import com.github.honatas.fieldvalidator.FieldValidator;
 
 public class MyFieldValidator extends FieldValidator {
 
-    public Validator required = (Object field) -> {
+    public MyFieldValidator() {
+    }
+
+    public MyFieldValidator(Serializable data) {
+        super(data);
+    }
+
+    public Validator required = (Object field, String fieldName) -> {
         if (field == null || (field instanceof String string && string.isEmpty()) || (field instanceof Number number && number.intValue() == 0)) {
-            return "Value is required";
+            return fieldName + " is required";
         }
         return null;
     };
 
-    public Validator positive = (Object field) -> {
+    public Validator positive = (Object field, String fieldName) -> {
         if (field == null || !(field instanceof Number number) || number.intValue() < 0) {
-            return "Value must be greater than zero";
+            return fieldName + " must be greater than zero";
         }
         return null;
     };
@@ -47,7 +54,7 @@ public class MyFieldValidator extends FieldValidator {
 Let's assume you have a data class to validate:
 
 ```java
-public record MyData(String field01, Integer field02, Integer field03) {
+public record MyData(String name, Integer age, Integer height) {
 }
 ```
 
@@ -56,9 +63,9 @@ Then you can create a new instance of your FieldValidator to check on your data:
 ```java
     MyData data = new MyData(null, 2, -3);
     MyFieldValidator v = new MyFieldValidator(data);
-    v.validate("field01", v.required);
-    v.validate("field02", v.required, v.positive);
-    v.validate("field03", v.required, v.positive);
+    v.validate("name", v.required);
+    v.validate("age", v.required, v.positive);
+    v.validate("height", v.required, v.positive);
 
     System.out.println(v.getErrors());
 ```
@@ -66,7 +73,7 @@ Then you can create a new instance of your FieldValidator to check on your data:
 This will yield the following result:
 
 ```
-{field01=Value is required, field03=Value must be greater than zero}
+{name=name is required, height=height must be greater than zero}
 ```
 
 ## How it works
@@ -96,12 +103,12 @@ You can create validators with parameters, here is an example:
 public class MyFieldValidator extends FieldValidator {
 
 	public Validator maxLength(int size) {
-    	return (value) -> {
+    	return (value, fieldName) -> {
     		if (value == null) {
     			return null;
     		}
     		if (value.toString().length() > size) {
-    			return "Field must have maximum " + size + " characters";
+    			return fieldName + " must have maximum " + size + " characters";
     		}
     		return null;
     	};
@@ -113,7 +120,7 @@ And then you call the validator like this:
 
 ```java
     MyFieldValidator v = new MyFieldValidator();
-    v.validate("abcde", "field01", v.maxLength(2));
+    v.validate("abcde", "myField", v.maxLength(2));
 ```
 
 

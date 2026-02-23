@@ -5,6 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import com.github.honatas.fieldvalidator.exception.FieldValidationException;
@@ -16,16 +18,20 @@ import com.github.honatas.fieldvalidator.exception.FieldValidationException;
  */
 public class FieldValidator {
 
+	private Logger logger = Logger.getLogger(FieldValidator.class.getName());
+
 	protected Map<String, String> errors = new HashMap<>();
 	protected Serializable data;
 	protected Class<?> dataClazz;
 
 	public FieldValidator() {
+		this.logger.fine("Validator created without data");
 	}
 
 	public FieldValidator(Serializable data) {
 		this.data = data;
 		this.dataClazz = data.getClass();
+		this.logger.fine("Validator created with data from class " + this.dataClazz.getName());
 	}
 	
 	/** @return A {@code java.util.Map} conatining an error message for each field. */
@@ -69,7 +75,7 @@ public class FieldValidator {
 	 * Validator functional interface, represents a validation method.
 	 */
 	public interface Validator {
-		String validate(Object value);
+		String validate(Object value, String fieldName);
 	}
 	
 	/**
@@ -88,8 +94,11 @@ public class FieldValidator {
 			throw new IllegalArgumentException("You need to pass a field name");
 		}
 		for (Validator v: validators) {
-			String message = v.validate(value);
+			this.logger.log(Level.FINE, "Validating field {0} with validator {1}", new Object[] { fieldName, v });
+			String message = v.validate(value, fieldName);
+			this.logger.log(Level.FINE, "Validation passed for field {0} with validator {1}", new Object[] { fieldName, v });
 			if (message != null) {
+				this.logger.log(Level.FINE, "Validation failed for field {0} with validator {1}", new Object[] { fieldName, v });
 				errors.put(fieldName, message);
 				return;
 			}
@@ -142,7 +151,7 @@ public class FieldValidator {
 	 * @return a {@code Validator}
 	 */
 	public static Validator getValidatorRegexMatch(String regex, String message) {
-		return (Object data) -> {
+		return (Object data, String fieldName) -> {
 			if (data == null || ((String) data).isEmpty()) {
 				return null;
 			}
@@ -162,7 +171,7 @@ public class FieldValidator {
 	 * @return a {@code Validator}
 	 */
 	public static Validator getValidatorRegexFind(String regex, String message) {
-		return (Object data) -> {
+		return (Object data, String fieldName) -> {
 			if (data == null || ((String) data).isEmpty()) {
 				return null;
 			}
