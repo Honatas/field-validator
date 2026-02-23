@@ -12,7 +12,7 @@ public class TestValidator extends FieldValidator {
     }
 
 	public Validator required = (Object field, String fieldName) -> {
-        if (field == null || (field instanceof String string && string.isEmpty()) || (field instanceof Number number && number.intValue() == 0)) {
+        if (field == null || field instanceof String string && string.isEmpty() || field instanceof Number number && number.intValue() == 0) {
             return fieldName + " is required";
         }
         return null;
