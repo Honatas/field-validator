@@ -1,7 +1,6 @@
 package com.github.honatas.fieldvalidator;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -60,6 +59,11 @@ public class FieldValidator {
 	public void addErrorOn(String field, String error) {
 		this.getErrors().put(field, error);
 	}
+
+	/** @return The error message for the specified field, or null if there is no error. */
+	public String getErrorOn(String field) {
+		return this.getErrors().get(field);
+	}
 	
 	/**
 	 * Validator functional interface, represents a validation method.
@@ -71,11 +75,11 @@ public class FieldValidator {
 	/**
 	 * Validates a field with the given validators, in order. Halts on the first validation error and sets the errors map with the field and the error message.
 	 * 
-	 * @param fieldName this will be used as the key on the errors map
 	 * @param value the data to be validated
+	 * @param fieldName this will be used as the key on the errors map
 	 * @param validators the {@code Validator}s that will act upon the data
 	 */
-	public void validate(String fieldName, Object value, Validator... validators) {
+	public void validate(Object value, String fieldName, Validator... validators) {
 		for (Validator v: validators) {
 			String message = v.validate(value); 
 			if (message != null) {
@@ -88,7 +92,7 @@ public class FieldValidator {
 
 	public void validate(String fieldName, Validator... validators) {
 		Object value = getFieldValue(fieldName);
-		this.validate(fieldName, value, validators);
+		this.validate(value, fieldName, validators);
 	}
 
 
@@ -96,19 +100,20 @@ public class FieldValidator {
 	private Object getFieldValue(String fieldName) {
 		try {
 			return extractFieldValue(fieldName);
-		} catch (NoSuchFieldException | IllegalAccessException | InvocationTargetException e) {
+		} catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			return null;
 		}
 	}
 
 
-	private Object extractFieldValue(String fieldName) throws NoSuchFieldException, IllegalAccessException, InvocationTargetException {
+	private Object extractFieldValue(String fieldName) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, SecurityException {
 		try {
-			Method method = this.dataClazz.getMethod(fieldName)	;
-			return method.invoke(this.data);
+			String getterName = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+			Method getter = this.dataClazz.getMethod(getterName);
+			return getter.invoke(this.data);
 		} catch (NoSuchMethodException e) {
-			Field field = this.dataClazz.getDeclaredField(fieldName);
-			return field.get(this.data);
+			Method accessor = this.dataClazz.getMethod(fieldName);
+			return accessor.invoke(this.data);
 		}
 	}
 

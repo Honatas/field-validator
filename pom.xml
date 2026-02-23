@@ -19,11 +19,26 @@
 		<maven.javadoc.plugin.version>3.12.0</maven.javadoc.plugin.version>
 		<maven.gpg.plugin.version>3.2.8</maven.gpg.plugin.version>
 		<maven.nexus.plugin.version>1.7.0</maven.nexus.plugin.version>
+		<junit.jupiter.version>5.11.4</junit.jupiter.version>
 	</properties>
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>${junit.jupiter.version}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 	
 	<build>
 		<finalName>field-validator</finalName>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.5.2</version>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>

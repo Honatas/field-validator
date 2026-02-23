@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 /**
- * An exception to be thrown in case of having field validation errors. It carries the errors.
+ * An exception to be thrown in case of having field validation errors. It carries the errors and the tested data, if it exists.
  */
 public class FieldValidationException extends Exception {
 
