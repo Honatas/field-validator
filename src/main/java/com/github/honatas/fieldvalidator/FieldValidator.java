@@ -132,12 +132,12 @@ public class FieldValidator {
 		if (fieldName == null || fieldName.isEmpty()) {
 			throw new IllegalArgumentException("You need to pass a field name");
 		}
+		this.logger.log(Level.FINE, "Validating field {}", fieldName);
 		for (Validator v: validators) {
-			this.logger.log(Level.FINE, "Validating field {0} with validator {1}", new Object[] { fieldName, v });
 			String message = v.validate(value, fieldName);
-			this.logger.log(Level.FINE, "Validation passed for field {0} with validator {1}", new Object[] { fieldName, v });
+			this.logger.log(Level.FINE, "Validation passed for field {}", fieldName);
 			if (message != null) {
-				this.logger.log(Level.FINE, "Validation failed for field {0} with validator {1}", new Object[] { fieldName, v });
+				this.logger.log(Level.FINE, "Validation failed for field {}", fieldName);
 				errors.put(fieldName, message);
 				return;
 			}
