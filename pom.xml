@@ -6,35 +6,32 @@
 	
 	<groupId>com.github.honatas</groupId>
 	<artifactId>field-validator</artifactId>
-	<version>1.0.0</version>
+	<version>1.1.0</version>
 	
 	<name>field-validator</name>
 	<description>An imperative data validator written in java 8</description>
 	<url>https://github.com/Honatas/field-validator</url>
 
 	<properties>
-		<maven.compiler.target>1.8</maven.compiler.target>
-        <maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.release>16</maven.compiler.release>
+		<maven.jar.plugin.version>3.5.0</maven.jar.plugin.version>
+		<maven.source.plugin.version>3.4.0</maven.source.plugin.version>
+		<maven.javadoc.plugin.version>3.12.0</maven.javadoc.plugin.version>
+		<maven.gpg.plugin.version>3.2.8</maven.gpg.plugin.version>
+		<maven.nexus.plugin.version>1.7.0</maven.nexus.plugin.version>
 	</properties>
 	
-	<dependencies>
-		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-lang3</artifactId>
-		    <version>3.11</version>
-		</dependency>
-	</dependencies>
-
 	<build>
 		<finalName>field-validator</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven.jar.plugin.version}</version>
 			</plugin>
 			<plugin>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.2.1</version>
+				<version>${maven.source.plugin.version}</version>
 				<executions>
 					<execution>
 						<id>attach-source</id>
@@ -48,7 +45,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>3.2.0</version>
+				<version>${maven.javadoc.plugin.version}</version>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
@@ -58,10 +55,10 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
+			<!-- <plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
-				<version>1.6</version>
+				<version>${maven.gpg.plugin.version}</version>
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
@@ -75,14 +72,14 @@
 			<plugin>
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.7</version>
+				<version>${maven.nexus.plugin.version}</version>
 				<extensions>true</extensions>
 				<configuration>
 					<serverId>sonatype-nexus-staging</serverId>
 					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 					<autoReleaseAfterClose>true</autoReleaseAfterClose>
 				</configuration>
-			</plugin>
+			</plugin> -->
 		</plugins>
 	</build>
 	
@@ -104,7 +101,7 @@
 		</license>
 	</licenses>
 	
-	<distributionManagement>
+	<!-- <distributionManagement>
 		<snapshotRepository>
 			<id>sonatype-nexus-snapshots</id>
 			<name>Sonatype Nexus Snapshots</name>
@@ -115,6 +112,6 @@
 			<name>Nexus Release Repository</name>
 			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
 		</repository>
-	</distributionManagement>
+	</distributionManagement> -->
 
 </project>
