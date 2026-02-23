@@ -88,7 +88,7 @@ public class FieldValidator {
 			throw new IllegalArgumentException("You need to pass a field name");
 		}
 		for (Validator v: validators) {
-			String message = v.validate(value); 
+			String message = v.validate(value);
 			if (message != null) {
 				errors.put(fieldName, message);
 				return;
