@@ -7,6 +7,10 @@
 
 An imperative data validator written with java 8's lambda.  
 
+## Deprecation Notice
+
+Use [Verdict](https://github.com/Honatas/verdict) instead. This project is deprecated and is no longer being mantained.  
+
 ## Download
 
 If you are using Maven, add this to your pom.xml in the dependencies section:
